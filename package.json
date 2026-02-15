@@ -4,17 +4,18 @@
   "description": "Standalone media stream server for Twilio <-> OpenAI Realtime bridge",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm src/index.ts",
-    "dev": "node --loader ts-node/esm --watch src/index.ts"
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "start": "node dist/index.js",
+    "dev": "tsc && node --watch dist/index.js"
   },
   "dependencies": {
     "ws": "^8.18.0",
     "@supabase/supabase-js": "^2.49.1",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.0"
   },
   "devDependencies": {
-    "@types/ws": "^8.5.13",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.7.0"
+    "@types/ws": "^8.5.13"
   }
 }
