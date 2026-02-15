@@ -384,8 +384,7 @@ When making a reservation, ask for: name, date, time, and party size.`;
               text: oaiMsg.transcript,
               timestamp: new Date().toISOString(),
             })
-            .then(() => {})
-            .catch((err) => console.error("Transcript save error:", err));
+            .then(() => {}, (err: any) => console.error("Transcript save error:", err));
         }
         break;
       }
@@ -400,8 +399,7 @@ When making a reservation, ask for: name, date, time, and party size.`;
               text: oaiMsg.transcript,
               timestamp: new Date().toISOString(),
             })
-            .then(() => {})
-            .catch((err) => console.error("Transcript save error:", err));
+            .then(() => {}, (err: any) => console.error("Transcript save error:", err));
         }
         break;
       }
@@ -446,7 +444,11 @@ When making a reservation, ask for: name, date, time, and party size.`;
             (sum, i) => sum + i.price * i.quantity,
             0
           );
-          result = `Added ${qty}x ${menuItem.name} ($${menuItem.price} each). Current order total: $${total.toFixed(2)}. Items in order: ${this.currentOrderItems.map((i) => `${i.quantity}x ${i.name}`).join(", ")}`;
+          result = `Added ${qty}x ${menuItem.name} ($${menuItem.price} each). Current order total: $${total.toFixed(
+            2
+          )}. Items in order: ${this.currentOrderItems
+            .map((i) => `${i.quantity}x ${i.name}`)
+            .join(", ")}`;
         } else {
           result = `Sorry, I couldn't find "${args.item_name}" on our menu. Could you try again?`;
         }
@@ -475,15 +477,16 @@ When making a reservation, ask for: name, date, time, and party size.`;
             .single();
 
           this.orderId = order?.id || "";
-          result = `Order confirmed! ${this.currentOrderItems.length} items, total: $${total.toFixed(2)}. Order ID: ${this.orderId}`;
+          result = `Order confirmed! ${this.currentOrderItems.length} items, total: $${total.toFixed(
+            2
+          )}. Order ID: ${this.orderId}`;
 
           if (this.callLogId) {
             supabase
               .from("call_logs")
               .update({ type: "order" })
               .eq("id", this.callLogId)
-              .then(() => {})
-              .catch((err) => console.error("Call log update error:", err));
+              .then(() => {}, (err: any) => console.error("Call log update error:", err));
           }
 
           this.currentOrderItems = [];
@@ -514,8 +517,7 @@ When making a reservation, ask for: name, date, time, and party size.`;
             .from("call_logs")
             .update({ type: "reservation" })
             .eq("id", this.callLogId)
-            .then(() => {})
-            .catch((err) => console.error("Call log update error:", err));
+            .then(() => {}, (err: any) => console.error("Call log update error:", err));
         }
         break;
       }
@@ -558,7 +560,9 @@ When making a reservation, ask for: name, date, time, and party size.`;
             (s, i) => s + i.price * i.quantity,
             0
           );
-          result = `Current order: ${this.currentOrderItems.map((i) => `${i.quantity}x ${i.name} ($${i.price})`).join(", ")}. Total: $${total.toFixed(2)}`;
+          result = `Current order: ${this.currentOrderItems
+            .map((i) => `${i.quantity}x ${i.name} ($${i.price})`)
+            .join(", ")}. Total: $${total.toFixed(2)}`;
         }
         break;
       }
